@@ -2,10 +2,12 @@ use std::collections::BTreeMap;
 use std::sync::{Arc, RwLock};
 
 use crate::indexer::spot_order::{OrderType, SpotOrder};
+use crate::web::graphql::TradeOrderEvent;
 
 pub struct OrderBook {
     buy_orders: Arc<RwLock<BTreeMap<u128, Vec<SpotOrder>>>>,
     sell_orders: Arc<RwLock<BTreeMap<u128, Vec<SpotOrder>>>>,
+    trade_events: Arc<RwLock<Vec<TradeOrderEvent>>>,
 }
 
 impl Default for OrderBook {
@@ -13,6 +15,7 @@ impl Default for OrderBook {
         OrderBook {
             buy_orders: Arc::new(RwLock::new(BTreeMap::new())),
             sell_orders: Arc::new(RwLock::new(BTreeMap::new())),
+            trade_events: Arc::new(RwLock::new(vec![])),
         }
     }
 }
@@ -112,5 +115,9 @@ impl OrderBook {
         for key in empty_keys {
             target_tree.remove(&key);
         }
+    }
+
+    pub fn get_trade_events(&self) -> Vec<TradeOrderEvent> {
+        self.trade_events.read().unwrap().clone()
     }
 }

@@ -6668,6 +6668,7 @@ dependencies = [
  "anyhow",
  "async-graphql",
  "async-graphql-rocket",
+ "async-stream",
  "async-tungstenite",
  "chrono",
  "ctrlc",
